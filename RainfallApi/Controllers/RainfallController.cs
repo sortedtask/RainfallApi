@@ -23,6 +23,22 @@ namespace RainfallApi.Controllers
                 });
             }
 
+            var minimumCount = 1;
+            var maximumCount = 100;
+
+            var requestedCountIsOutsideValidRange = count < minimumCount || count > maximumCount;
+            if (requestedCountIsOutsideValidRange)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Message = "Invalid request",
+                    Detail =
+                    [
+                        new ErrorDetail { PropertyName = "count", Message = $"Count must be between {minimumCount} and {maximumCount}" }
+                    ]
+                });
+            }
+
             var readings = new List<RainfallReading>();
             return Ok(new RainfallReadingResponse { Readings = readings });
         }
