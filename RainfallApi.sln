@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainfallApi", "RainfallApi\RainfallApi.csproj", "{88FED8F9-5FAC-49CF-8253-674586916C0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainfallApi.Tests", "RainfallApi.Tests\RainfallApi.Tests.csproj", "{27CAA91A-6578-4250-9C19-9CBC1C26A681}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{88FED8F9-5FAC-49CF-8253-674586916C0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88FED8F9-5FAC-49CF-8253-674586916C0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88FED8F9-5FAC-49CF-8253-674586916C0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27CAA91A-6578-4250-9C19-9CBC1C26A681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27CAA91A-6578-4250-9C19-9CBC1C26A681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27CAA91A-6578-4250-9C19-9CBC1C26A681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27CAA91A-6578-4250-9C19-9CBC1C26A681}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
