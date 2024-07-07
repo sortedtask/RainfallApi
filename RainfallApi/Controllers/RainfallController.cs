@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RainfallApi.Models;
 
 namespace RainfallApi.Controllers
@@ -7,8 +9,15 @@ namespace RainfallApi.Controllers
     [Route("rainfall/id/{stationId}/readings")]
     public class RainfallController : ControllerBase
     {
+        private readonly HttpClient _httpClient;
+
+        public RainfallController(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
         [HttpGet]
-        public ActionResult<RainfallReadingResponse> GetRainfallReadings(string stationId, [FromQuery] int count = 10)
+        public async Task<ActionResult<RainfallReadingResponse>> GetRainfallReadings(string stationId, [FromQuery] int count = 10)
         {
             var stationIdIsMissing = string.IsNullOrEmpty(stationId);
             if (stationIdIsMissing)
@@ -39,8 +48,36 @@ namespace RainfallApi.Controllers
                 });
             }
 
-            var readings = new List<RainfallReading>();
-            return Ok(new RainfallReadingResponse { Readings = readings });
+            var url = $"https://environment.data.gov.uk/flood-monitoring/id/stations/{stationId}/readings?_sorted&_limit={count}";
+
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<RainfallReadingResponse>(url);
+
+                if (response == null || response.Readings == null || response.Readings.Count == 0)
+                {
+                    return NotFound(new ErrorResponse
+                    {
+                        Message = "No readings found for the specified stationId",
+                        Detail = new List<ErrorDetail>()
+                    });
+                }
+
+                var serializeSettings = new JsonSerializerSettings();
+                serializeSettings.Formatting = Formatting.Indented;
+                serializeSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                var responseString = JsonConvert.SerializeObject(response, serializeSettings);
+
+                return Ok(responseString);
+            }
+            catch (HttpRequestException)
+            {
+                return StatusCode(500, new ErrorResponse
+                {
+                    Message = "Internal server error",
+                    Detail = new List<ErrorDetail>()
+                });
+            }
         }
     }
 }
