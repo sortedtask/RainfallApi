@@ -20,4 +20,20 @@ public class RainfallControllerTests
         var response = Assert.IsType<RainfallReadingResponse>(okResult.Value);
         var readings = Assert.IsAssignableFrom<IEnumerable<RainfallReading>>(response.Readings);
     }
+
+    [Fact]
+    public void GetRainfallReadings_ReturnsBadRequest_WhenStationIdIsMissing()
+    {
+        // Arrange
+        var controller = new RainfallController();
+
+        // Act
+        var result = controller.GetRainfallReadings(null);
+
+        // Assert
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+        var response = Assert.IsType<ErrorResponse>(badRequestResult.Value);
+        Assert.Equal("Invalid request", response.Message);
+        Assert.Equal("stationId", response.Detail.First().PropertyName);
+    }
 }
